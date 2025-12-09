@@ -146,6 +146,13 @@ async def identify(request: IdentifyRequest):
     settings = get_settings()
     client = get_pyannote_client()
 
+    # Log voiceprint info for debugging
+    print(f"[/identify] Recording: {request.recording_id}")
+    print(f"[/identify] Audio URL: {request.audio_url}")
+    print(f"[/identify] Number of voiceprints: {len(request.voiceprints)}")
+    for vp in request.voiceprints:
+        print(f"[/identify] Voiceprint label: {vp.get('label')}, size: {len(vp.get('voiceprint', ''))} chars")
+
     callback_url = request.callback_url or settings.webhook_url
     if "?" in callback_url:
         webhook_with_id = f"{callback_url}&recording_id={request.recording_id}"
