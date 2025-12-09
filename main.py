@@ -205,11 +205,15 @@ async def get_job_status(job_id: str):
         raise HTTPException(status_code=500, detail=f"Failed to get job status: {e}")
 
 
+class VoiceprintRequest(BaseModel):
+    """Request to create a voiceprint."""
+
+    audio_url: str
+    callback_url: str | None = None
+
+
 @app.post("/voiceprint")
-async def create_voiceprint(
-    audio_url: str,
-    callback_url: str | None = None,
-):
+async def create_voiceprint(request: VoiceprintRequest):
     """
     Create a voiceprint from an audio sample.
 
@@ -220,8 +224,8 @@ async def create_voiceprint(
 
     try:
         result = await client.create_voiceprint(
-            audio_url=audio_url,
-            webhook_url=callback_url or settings.webhook_url,
+            audio_url=request.audio_url,
+            webhook_url=request.callback_url or settings.webhook_url,
         )
 
         return {
