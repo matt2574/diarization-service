@@ -7,23 +7,16 @@ from functools import lru_cache
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
-    # HuggingFace token for pyannote models
-    huggingface_token: str
+    # pyannoteAI API key (from dashboard.pyannote.ai)
+    pyannote_api_key: str
 
     # Webhook URL to call back Next.js app
     webhook_url: str = "http://localhost:3000/api/webhooks/diarization"
     webhook_secret: str = ""
 
-    # Redis for job queue (optional - falls back to in-memory)
-    redis_url: str | None = None
-
-    # Processing settings
-    device: str = "cpu"  # "cpu" or "cuda"
-    whisper_model: str = "base"  # tiny, base, small, medium, large-v3
-
-    # Diarization settings
-    min_speakers: int | None = None
-    max_speakers: int | None = None
+    # pyannoteAI model selection
+    # Options: "precision-2" (best), "precision-1", "community-1" (cheapest)
+    pyannote_model: str = "precision-2"
 
     # Server settings
     host: str = "0.0.0.0"
