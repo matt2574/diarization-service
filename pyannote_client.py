@@ -110,6 +110,15 @@ class PyannoteClient:
         if max_speakers is not None:
             payload["maxSpeakers"] = max_speakers
 
+        # Log the payload being sent (mask the actual voiceprint data)
+        debug_payload = {**payload}
+        if "voiceprints" in debug_payload:
+            debug_payload["voiceprints"] = [
+                {"label": vp["label"], "voiceprint_length": len(vp.get("voiceprint", ""))}
+                for vp in payload["voiceprints"]
+            ]
+        print(f"[pyannote_client] Sending to /identify: {debug_payload}")
+
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 f"{PYANNOTE_API_BASE}/identify",
@@ -117,6 +126,7 @@ class PyannoteClient:
                 json=payload,
                 timeout=30.0,
             )
+            print(f"[pyannote_client] Response status: {response.status_code}")
             response.raise_for_status()
             return response.json()
 
