@@ -166,10 +166,13 @@ class PyannoteClient:
         """
         payload: dict[str, Any] = {
             "url": audio_url,
+            "model": self.settings.pyannote_model,  # Use same model as identification
         }
 
         if webhook_url:
             payload["webhook"] = webhook_url
+
+        print(f"[pyannote_client] Creating voiceprint with model: {self.settings.pyannote_model}")
 
         async with httpx.AsyncClient() as client:
             response = await client.post(
