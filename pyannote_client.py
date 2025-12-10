@@ -93,9 +93,10 @@ class PyannoteClient:
             "url": audio_url,
             "model": self.settings.pyannote_model,
             "voiceprints": voiceprints,
+            "confidence": True,  # Enable confidence scores to debug matching
             "matching": {
                 "threshold": matching_threshold,
-                "exclusive": True,
+                "exclusive": False,  # Allow multiple speakers to match same voiceprint
             },
         }
 
