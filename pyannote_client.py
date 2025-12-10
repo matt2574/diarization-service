@@ -93,12 +93,9 @@ class PyannoteClient:
             "url": audio_url,
             "model": self.settings.pyannote_model,
             "voiceprints": voiceprints,
-            "confidence": True,  # Enable confidence scores to debug matching
-            "matching": {
-                "threshold": matching_threshold,
-                "exclusive": False,  # Allow multiple speakers to match same voiceprint
-            },
         }
+
+        print(f"[pyannote_client] Voiceprints being sent: {[{'label': vp['label'], 'vp_len': len(vp['voiceprint'])} for vp in voiceprints]}")
 
         if webhook_url:
             payload["webhook"] = webhook_url
